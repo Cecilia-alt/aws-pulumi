@@ -1,0 +1,23 @@
+name: quickstart
+description: A minimal AWS Pulumi YAML program
+runtime: yaml
+resources:
+     # ...
+    index.html:
+      type: aws:s3:BucketObject
+      properties:
+        bucket: ${my-bucket}
+        source:
+          Fn::FileAsset: ./index.html
+        acl: public-read
+        contentType: text/html
+    # Create an AWS resource (S3 Bucket)
+    my-bucket:
+        type: aws:s3:Bucket
+        properties:
+          website: 
+            indexDocument: index.html
+outputs:
+    # Export the name of the bucket
+    bucketName: ${my-bucket.id}
+    bucketEndpoint: http://${my-bucket.websiteEndpoint}
